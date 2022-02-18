@@ -2,6 +2,7 @@ from typing import Sequence
 from ball import Ball
 from block import Block
 from colors import COLORS
+from hud import HUD
 from paddle import Paddle
 from screen import Screen
 import pygame
@@ -24,6 +25,7 @@ def loop():
   screen = Screen(600, 720)
   paddle = Paddle((screen.width / 2) - 30, 0.9 * screen.height, 60, 15)
   ball = Ball((screen.width / 2), (screen.height / 2), 10)
+  hud = HUD()
 
   blocks: Sequence[Block] = []
 
@@ -44,6 +46,7 @@ def loop():
     ball.draw(screen.surface)
     for block in blocks:
       block.draw(screen.surface)
+    hud.draw(screen.surface)
     pygame.display.flip()
     game_clock.tick(FPS)
 
