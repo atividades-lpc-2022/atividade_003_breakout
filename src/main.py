@@ -15,7 +15,7 @@ COLUMN_BLOCKS = 14
 LINE_BLOCKS = 8
 BLOCK_GAP = 1
 
-def set_global_events():
+def verify_global_events():
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       global is_running
@@ -24,7 +24,7 @@ def set_global_events():
 def loop():
   screen = Screen(600, 720)
   paddle = Paddle((screen.width / 2) - 30, 0.9 * screen.height, 60, 15)
-  ball = Ball((screen.width / 2), (screen.height / 2), 10)
+  ball = Ball((screen.width / 2), (screen.height / 2), 10, 3)
   hud = HUD()
 
   blocks: Sequence[Block] = []
@@ -41,18 +41,21 @@ def loop():
       blocks.append(Block(column * (block_width + BLOCK_GAP), line * (block_height + 2), block_width, block_height, COLORS[color]))
 
   while is_running:
+    verify_global_events()
+    paddle.set_controls(screen)
+
     screen.draw()
-    paddle.draw(screen.surface)
-    ball.draw(screen.surface)
+    paddle.draw(screen)
     for block in blocks:
-      block.draw(screen.surface)
-    hud.draw(screen.surface)
-    pygame.display.flip()
+      block.draw(screen)
+    hud.draw(screen)
+    ball.draw(screen)
+    
+    pygame.display.update()
     game_clock.tick(FPS)
 
 def main():
   pygame.init()
-  set_global_events()
   loop()
   pygame.quit()
 

@@ -1,6 +1,6 @@
 from pygame import Color, Surface
 import pygame
-
+from screen import Screen
 
 class Block:
   x: float
@@ -16,5 +16,8 @@ class Block:
     self.height = height
     self.color = color
 
-  def draw(self, screen: Surface):
-    self.rect = pygame.draw.rect(screen,self.color,pygame.Rect(self.x, self.y, self.width, self.height))
+  def draw(self, screen: Screen):
+    self.rect = pygame.draw.rect(
+      screen.surface,
+      self.color,
+      pygame.Rect(self.x, self.y, self.width, self.height))

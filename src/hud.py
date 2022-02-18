@@ -1,6 +1,7 @@
 import pygame
 
 from colors import COLORS
+from screen import Screen
 
 class HUD:
   points: int
@@ -31,8 +32,18 @@ class HUD:
     textRect.center = (x, y)
     screen.blit(text, textRect)
 
-  def draw(self, screen: pygame.Surface):
+  def draw(self, screen: Screen):
     points_label = f"000{self.points}"[-3:]
     life_label = str(self.life)
-    self.__draw_label__(screen, points_label, screen.get_width() * 0.2, screen.get_height() * 0.15, 32)
-    self.__draw_label__(screen, life_label, screen.get_width() * 0.8, screen.get_height() * 0.15, 24)
+    self.__draw_label__(
+      screen.surface, 
+      points_label, 
+      screen.width * 0.2, 
+      screen.height * 0.15, 
+      32)
+    self.__draw_label__(
+      screen.surface, 
+      life_label, 
+      screen.width * 0.8, 
+      screen.height * 0.15, 
+      24)
