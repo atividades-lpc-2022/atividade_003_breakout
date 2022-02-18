@@ -18,11 +18,13 @@
   - Escreve "PAUSE"
 ## Personagem e sua movimentação
 - Barra: esquerda-direita
+- Bola: circular
 ## Controle e eventos
 - Mover para esquerda ("Seta para esquerda")
 - Mover para direita ("Seta para direita")
 - _Pause_ ("Espaço")
 - Quando a bola bater em um bloco, o bloco deverá desaparecer
+- Movimentação pelo Mouse
 ### Mecânicas
 - Rebater na raquete
 - Rebater nas paredes (exceto a inferior)
