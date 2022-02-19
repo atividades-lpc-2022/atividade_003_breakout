@@ -32,10 +32,10 @@ class Ball:
   def invert_y_velocity(self):
     self.y_velocity *= -1
 
-  def increse_x_velocity(self, velocity: float):
+  def increase_x_velocity(self, velocity: float):
     self.x_velocity += velocity
 
-  def increse_y_velocity(self, velocity: float):
+  def increase_y_velocity(self, velocity: float):
     self.y_velocity += velocity
 
   def check_collision(self, screen: Screen, hud: HUD):
