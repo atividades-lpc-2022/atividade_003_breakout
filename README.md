@@ -23,20 +23,20 @@
 - Mover para esquerda ("Seta para esquerda")
 - Mover para direita ("Seta para direita")
 - _Pause_ ("Espaço")
-- Quando a bola bater em um bloco, o bloco deverá desaparecer
 - Movimentação pelo Mouse
 ### Mecânicas
-- Rebater na raquete
-- Rebater nas paredes (exceto a inferior)
-- Pontuar ao bater em um bloco
+1. Rebater na raquete
+2. Rebater nas paredes (exceto a inferior)
+3. Pontuar ao bater em um bloco:
   - Amarelos: 1 ponto
   - Verde: 3 pontos
   - Laranja: 5 pontos
   - Vermelho: 7 pontos
-- Aumento da velocidade da bola conforme o jogador pontua
+4. Quando a bola bater em um bloco, o bloco deverá desaparecer
+5. Aumento da velocidade da bola conforme o jogador pontua:
   - Depois de 4 hits
   - Depois de 12 hits
   - Depois de bater em um bloco laranja ou vermelho
-- O jogador perde vida quando a bola bate na parede inferior
+6. O jogador perde vida quando a bola bate na parede inferior:
   - Total de 4 vidas
-- A cada transição de tentativa na tela de carregamento a barra espande por alguns segundos, a bola bate algumas vezes na barra (não pontuando) até que o jogo comece novamente.
+7. A cada transição de tentativa na tela de carregamento a barra espande por alguns segundos, a bola bate algumas vezes na barra (não pontuando) até que o jogo comece novamente.

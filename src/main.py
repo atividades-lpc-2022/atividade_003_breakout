@@ -4,6 +4,7 @@ from block import Block
 from colors import COLORS
 from hud import HUD
 from paddle import Paddle
+from points import POINTS_VALUE
 from screen import Screen
 import pygame
 
@@ -14,6 +15,7 @@ FPS = 60
 COLUMN_BLOCKS = 14
 LINE_BLOCKS = 8
 BLOCK_GAP = 1
+MAX_LIFE = 4
 
 def verify_global_events():
   for event in pygame.event.get():
@@ -38,11 +40,28 @@ def loop():
     elif line == 12: color = 'green'
     elif line == 14: color = 'yellow'
     for column in range(COLUMN_BLOCKS):
-      blocks.append(Block(column * (block_width + BLOCK_GAP), line * (block_height + 2), block_width, block_height, COLORS[color]))
+      blocks.append(Block(
+        column * (block_width + BLOCK_GAP), 
+        line * (block_height + 2), 
+        block_width, 
+        block_height, 
+        COLORS[color],
+        POINTS_VALUE[color]))
 
   while is_running:
+    if hud.life == MAX_LIFE:
+      return loop()
+
     verify_global_events()
     paddle.set_controls(screen)
+
+    paddle.check_collision(ball)
+    ball.check_collision(screen, hud)
+    for block in blocks:
+      if block.check_is_colliding(ball):
+        ball.invert_y_velocity()
+        hud.increment_points(block.points)
+        blocks.remove(block)
 
     screen.draw()
     paddle.draw(screen)
