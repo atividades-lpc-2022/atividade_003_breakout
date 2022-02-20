@@ -118,6 +118,7 @@ COLUMN_BLOCKS = 14
 LINE_BLOCKS = 8
 BLOCK_GAP = 1
 MAX_LIFE = 4
+paused = False
 
 
 def verify_global_events():
@@ -125,6 +126,11 @@ def verify_global_events():
         if event.type == pygame.QUIT:
             global is_running
             is_running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                global paused
+                paused = not paused
+        
 
 def loop():
   screen = Screen(600, 720)
@@ -154,7 +160,13 @@ def loop():
   while is_running:
     if hud.life == MAX_LIFE:
       return loop()
-
+    
+    if paused is True:
+        pygame.draw.rect(screen.surface, white, [270, 400, 20, 70])
+        pygame.draw.rect(screen.surface, white, [305, 400, 20, 70])
+        pygame.display.update()
+        continue
+        
     verify_global_events()
     paddle.set_controls(screen)
 
