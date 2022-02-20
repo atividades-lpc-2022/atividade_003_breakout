@@ -24,7 +24,6 @@ size = [600, 720]
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Breakout - LPC - Gabriel Lima e Guilherme Correia")
 
-
 # start screen
 pressedSPACE = False
 blink = True
@@ -85,7 +84,7 @@ while not pressedSPACE:
     blink = not blink
 
     if blink:
-        start_font = pygame.font.Font("src/assets/PressStart2P.ttf", 23)
+        start_font = pygame.font.Font("scr/assets/PressStart2P.ttf", 23)
         start_text = start_font.render("PRESS SPACE TO START", True, blue, gray)
         start_text_rect = start_text.get_rect()
         start_text_rect.center = (300, 550)
@@ -96,7 +95,6 @@ while not pressedSPACE:
 
 # 3 seconds to start
 for e in range(3):
-
     screen.fill(black)
 
     seconds_font = pygame.font.Font("src/assets/PressStart2P.ttf", 50)
@@ -119,7 +117,7 @@ LINE_BLOCKS = 8
 BLOCK_GAP = 1
 MAX_LIFE = 4
 paused = False
-
+position_y = 0
 
 def verify_global_events():
     for event in pygame.event.get():
@@ -130,63 +128,97 @@ def verify_global_events():
             if event.key == pygame.K_SPACE:
                 global paused
                 paused = not paused
-        
+
 
 def loop():
-  screen = Screen(600, 720)
-  paddle = Paddle((screen.width / 2) - 30, 0.9 * screen.height, 60, 15)
-  ball = Ball((screen.width / 2), (screen.height / 2), 10, 3)
-  hud = HUD()
-
-  blocks: Sequence[Block] = []
-
-  block_width = (screen.width - COLUMN_BLOCKS * BLOCK_GAP) / COLUMN_BLOCKS
-  block_height = 15
-
-  for line in range(LINE_BLOCKS, LINE_BLOCKS * 2):
-    if line == 8: color = 'red'
-    elif line == 10: color = 'orange'
-    elif line == 12: color = 'green'
-    elif line == 14: color = 'yellow'
-    for column in range(COLUMN_BLOCKS):
-      blocks.append(Block(
-        column * (block_width + BLOCK_GAP), 
-        line * (block_height + 2), 
-        block_width, 
-        block_height, 
-        COLORS[color],
-        POINTS_VALUE[color]))
-
-  while is_running:
-    if hud.life == MAX_LIFE:
-      return loop()
+    global x_velocity, y_velocity, position_y
     
-    if paused is True:
-        pygame.draw.rect(screen.surface, white, [270, 400, 20, 70])
-        pygame.draw.rect(screen.surface, white, [305, 400, 20, 70])
-        pygame.display.update()
-        continue
+    screen = Screen(600, 720)
+    paddle = Paddle((screen.width / 2) - 30, 0.9 * screen.height, 60, 15)
+    ball = Ball((screen.width / 2), (screen.height / 2), 10, 3)
+    hud = HUD()
+    position_y = 0
+    blocks: Sequence[Block] = []
+
+    block_width = (screen.width - COLUMN_BLOCKS * BLOCK_GAP) / COLUMN_BLOCKS
+    block_height = 15
+
+    for line in range(LINE_BLOCKS, LINE_BLOCKS * 2):
+        if line == 8:
+            color = 'red'
+        elif line == 10:
+            color = 'orange'
+        elif line == 12:
+            color = 'green'
+        elif line == 14:
+            color = 'yellow'
+        for column in range(COLUMN_BLOCKS):
+            blocks.append(Block(
+                column * (block_width + BLOCK_GAP),
+                line * (block_height + 2),
+                block_width,
+                block_height,
+                COLORS[color],
+                POINTS_VALUE[color]))
+
+    while is_running:
+        if hud.life == MAX_LIFE:
+            return loop()
+
+        verify_global_events()
         
-    verify_global_events()
-    paddle.set_controls(screen)
+        # pausing
+        
+        if paused is True:
+            pygame.draw.rect(screen.surface, white, [270, 400, 20, 70])
+            pygame.draw.rect(screen.surface, white, [305, 400, 20, 70])
+            pygame.display.update()
+            continue
+        
+        # increasing speed
+        
+        if 170 <= position_y <= 187:
+            x_velocity = 0.6
+            y_velocity = 0.6
+            ball.x += 1 * ball.x_velocity
+            ball.y += 1 * ball.y_velocity
+        elif 136 <= position_y <= 153:
+            x_velocity = 0.8
+            y_velocity = 0.8
+            ball.x += 1 * ball.x_velocity
+            ball.y += 1 * ball.y_velocity
+        elif 4 <= hud.points < 12:
+            x_velocity = 0.1
+            y_velocity = 0.1
+            ball.x += 1 * ball.x_velocity
+            ball.y += 1 * ball.y_velocity
+        elif hud.points >= 12:
+            x_velocity = 0.4
+            y_velocity = 0.4
+            ball.x += 1 * ball.x_velocity
+            ball.y += 1 * ball.y_velocity
 
-    paddle.check_collision(ball)
-    ball.check_collision(screen, hud)
-    for block in blocks:
-      if block.check_is_colliding(ball):
-        ball.invert_y_velocity()
-        hud.increment_points(block.points)
-        blocks.remove(block)
+        paddle.set_controls(screen)
 
-    screen.draw()
-    paddle.draw(screen)
-    for block in blocks:
-      block.draw(screen)
-    hud.draw(screen)
-    ball.draw(screen)
-    
-    pygame.display.update()
-    game_clock.tick(FPS)
+        paddle.check_collision(ball)
+        ball.check_collision(screen, hud)
+        for block in blocks:
+            if block.check_is_colliding(ball):
+                position_y = block.y
+                ball.invert_y_velocity()
+                hud.increment_points(block.points)
+                blocks.remove(block)
+
+        screen.draw()
+        paddle.draw(screen)
+        for block in blocks:
+            block.draw(screen)
+        hud.draw(screen)
+        ball.draw(screen)
+
+        pygame.display.update()
+        game_clock.tick(FPS)
+
 
 def main():
     pygame.init()
