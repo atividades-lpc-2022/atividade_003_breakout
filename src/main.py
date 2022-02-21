@@ -120,7 +120,7 @@ BLOCK_GAP = 1
 MAX_LIFE = 4
 paused = False
 position_y = 0
-
+loading = 0
 
 def verify_global_events():
     for event in pygame.event.get():
@@ -169,7 +169,15 @@ def loop():
 
     while is_running:
         if hud.life == MAX_LIFE:
-            return loop()
+            # loading screen
+            pygame.draw.rect(screen.surface, blue, [0, 648, 600, 15])
+            global loading
+            loading += 0.0002
+            pygame.display.update()
+            if loading <= 1.5:
+                continue
+            else:
+                return loop()
 
         verify_global_events()
 
