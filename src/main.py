@@ -120,6 +120,7 @@ MAX_LIFE = 4
 paused = False
 position_y = 0
 
+
 def verify_global_events():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -133,7 +134,7 @@ def verify_global_events():
 
 def loop():
     global x_velocity, y_velocity, position_y
-    
+
     screen = Screen(600, 720)
     paddle = Paddle((screen.width / 2) - 30, 0.9 * screen.height, 60, 15)
     ball = Ball((screen.width / 2), (screen.height / 2), 10, 3)
@@ -146,38 +147,41 @@ def loop():
 
     for line in range(LINE_BLOCKS, LINE_BLOCKS * 2):
         if line == 8:
-            color = 'red'
+            color = "red"
         elif line == 10:
-            color = 'orange'
+            color = "orange"
         elif line == 12:
-            color = 'green'
+            color = "green"
         elif line == 14:
-            color = 'yellow'
+            color = "yellow"
         for column in range(COLUMN_BLOCKS):
-            blocks.append(Block(
-                column * (block_width + BLOCK_GAP),
-                line * (block_height + 2),
-                block_width,
-                block_height,
-                COLORS[color],
-                POINTS_VALUE[color]))
+            blocks.append(
+                Block(
+                    column * (block_width + BLOCK_GAP),
+                    line * (block_height + 2),
+                    block_width,
+                    block_height,
+                    COLORS[color],
+                    POINTS_VALUE[color],
+                )
+            )
 
     while is_running:
         if hud.life == MAX_LIFE:
             return loop()
 
         verify_global_events()
-        
+
         # pausing
-        
+
         if paused is True:
             pygame.draw.rect(screen.surface, white, [270, 400, 20, 70])
             pygame.draw.rect(screen.surface, white, [305, 400, 20, 70])
             pygame.display.update()
             continue
-        
+
         # increasing speed
-        
+
         if 170 <= position_y <= 187:
             x_velocity = 0.6
             y_velocity = 0.6
@@ -205,7 +209,7 @@ def loop():
         ball.check_collision(screen, hud)
         for block in blocks:
             if block.is_colliding(ball):
-                play_sound('src/assets/bounce.wav')
+                play_sound("src/assets/bounce.wav")
                 position_y = block.y
                 ball.invert_y_velocity()
                 hud.increment_points(block.points)
