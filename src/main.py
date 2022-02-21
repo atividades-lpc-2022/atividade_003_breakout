@@ -22,7 +22,7 @@ blue = (0, 0, 255)
 gray = (128, 128, 128)
 
 size = [600, 720]
-screen = pygame.display.set_mode(size)
+start_screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Breakout - LPC - Gabriel Lima e Guilherme Correia")
 
 # start screen
@@ -36,7 +36,7 @@ add_x_letter = 0
 ind_color = 0
 
 while not pressedSPACE:
-    screen.fill(black)
+    start_screen.fill(black)
 
     # flashlight headline
     for e in headline_list:
@@ -44,7 +44,7 @@ while not pressedSPACE:
         headline_text = headline_font.render(e, True, colors[ind_color])
         headline_text_rect = headline_text.get_rect()
         headline_text_rect.center = (150 + add_x_letter, 350)
-        screen.blit(headline_text, headline_text_rect)
+        start_screen.blit(headline_text, headline_text_rect)
         ind_color += 1
 
         add_x_letter += 25
@@ -54,9 +54,9 @@ while not pressedSPACE:
     add_x_letter = 0
     pygame.display.update()
 
-    pygame.draw.rect(screen, white, [0, 0, 600, 15])
-    pygame.draw.rect(screen, white, [0, 0, 10, 720])
-    pygame.draw.rect(screen, white, [590, 0, 20, 720])
+    pygame.draw.rect(start_screen, white, [0, 0, 600, 15])
+    pygame.draw.rect(start_screen, white, [0, 0, 10, 720])
+    pygame.draw.rect(start_screen, white, [590, 0, 20, 720])
 
     # drawing blocks
     add_height = 0
@@ -70,7 +70,7 @@ while not pressedSPACE:
         for row in range(2):
             for width in range(0, 588, 42):
                 pygame.draw.rect(
-                    screen, color, [0 + add_width, 90 + add_height, 42, 15]
+                    start_screen, color, [0 + add_width, 90 + add_height, 42, 15]
                 )
                 add_width += 43
             add_height += 9
@@ -89,21 +89,21 @@ while not pressedSPACE:
         start_text = start_font.render("PRESS SPACE TO START", True, blue, gray)
         start_text_rect = start_text.get_rect()
         start_text_rect.center = (300, 550)
-        screen.blit(start_text, start_text_rect)
+        start_screen.blit(start_text, start_text_rect)
 
     pygame.display.flip()
     pygame.time.wait(1000)
 
 # 3 seconds to start
 for e in range(3):
-    screen.fill(black)
+    start_screen.fill(black)
 
     seconds_font = pygame.font.Font("src/assets/PressStart2P.ttf", 50)
     seconds_text = seconds_font.render(str(3 - e), True, white)
     play_sound("src/assets/beep-sound.mp3")
     seconds_text_rect = seconds_text.get_rect()
     seconds_text_rect.center = (300, 330)
-    screen.blit(seconds_text, seconds_text_rect)
+    start_screen.blit(seconds_text, seconds_text_rect)
 
     pygame.display.update()
 
@@ -122,13 +122,14 @@ paused = False
 position_y = 0
 loading = 0
 
+
 def verify_global_events():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for global_event in pygame.event.get():
+        if global_event.type == pygame.QUIT:
             global is_running
             is_running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+        elif global_event.type == pygame.KEYDOWN:
+            if global_event.key == pygame.K_SPACE:
                 global paused
                 paused = not paused
 
@@ -147,14 +148,15 @@ def loop():
     block_height = 15
 
     for line in range(LINE_BLOCKS, LINE_BLOCKS * 2):
-        if line == 8:
-            color = "red"
-        elif line == 10:
-            color = "orange"
-        elif line == 12:
-            color = "green"
-        elif line == 14:
-            color = "yellow"
+        block_color = "red"
+        if 8 <= line <= 9:
+            block_color = "red"
+        elif 10 <= line <= 11:
+            block_color = "orange"
+        elif 12 <= line <= 13:
+            block_color = "green"
+        elif 14 <= line <= 15:
+            block_color = "yellow"
         for column in range(COLUMN_BLOCKS):
             blocks.append(
                 Block(
@@ -162,8 +164,8 @@ def loop():
                     line * (block_height + 2),
                     block_width,
                     block_height,
-                    COLORS[color],
-                    POINTS_VALUE[color],
+                    COLORS[block_color],
+                    POINTS_VALUE[block_color],
                 )
             )
 
