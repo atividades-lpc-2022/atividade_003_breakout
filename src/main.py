@@ -6,6 +6,7 @@ from hud import HUD
 from paddle import Paddle
 from points import POINTS_VALUE
 from screen import Screen
+from sound import play_sound
 
 import pygame
 
@@ -84,7 +85,7 @@ while not pressedSPACE:
     blink = not blink
 
     if blink:
-        start_font = pygame.font.Font("scr/assets/PressStart2P.ttf", 23)
+        start_font = pygame.font.Font("src/assets/PressStart2P.ttf", 23)
         start_text = start_font.render("PRESS SPACE TO START", True, blue, gray)
         start_text_rect = start_text.get_rect()
         start_text_rect.center = (300, 550)
@@ -203,7 +204,8 @@ def loop():
         paddle.check_collision(ball)
         ball.check_collision(screen, hud)
         for block in blocks:
-            if block.check_is_colliding(ball):
+            if block.is_colliding(ball):
+                play_sound('src/assets/bounce.wav')
                 position_y = block.y
                 ball.invert_y_velocity()
                 hud.increment_points(block.points)

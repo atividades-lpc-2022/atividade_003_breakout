@@ -2,6 +2,7 @@ from pygame import Rect
 from ball import Ball
 from colors import COLORS
 import pygame
+from sound import play_sound
 
 from screen import Screen
 
@@ -18,7 +19,7 @@ class Paddle:
     self.y = y
     self.width = width
     self.height = height
-    self.velocity = 4
+    self.velocity = 6
 
   def set_controls(self, screen: Screen):
     turn_right = pygame.key.get_pressed()[pygame.K_RIGHT]
@@ -27,13 +28,15 @@ class Paddle:
       self.x -= 1 * self.velocity
     elif turn_right and (self.x + self.width) < screen.width: 
       self.x += 1 * self.velocity
+    elif pygame.mouse.get_pressed() == (1,0,0):
+      self.x = pygame.mouse.get_pos()[0]
 
   def check_collision(self, ball: Ball):
     x_is_colliding = self.x <= ball.x <= self.x + self.width 
     y_is_colliding = self.y <= ball.y <= self.y + self.height
     if x_is_colliding and y_is_colliding:
       ball.invert_y_velocity()
-
+      play_sound('src/assets/bounce.wav')
   def draw(self, screen: Screen):
     self.rect = pygame.draw.rect(
       screen.surface,

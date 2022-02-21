@@ -19,7 +19,7 @@ class Block:
     self.color = color
     self.points = points
 
-  def check_is_colliding(self, ball: Ball):
+  def is_colliding(self, ball: Ball):
     x_is_colliding = self.x <= ball.x <= self.x + self.width
     y_is_colliding = self.y <= ball.y <= self.y + self.height
     return x_is_colliding and y_is_colliding
