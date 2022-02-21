@@ -55,8 +55,8 @@ while not pressedSPACE:
     pygame.display.update()
 
     pygame.draw.rect(screen, white, [0, 0, 600, 15])
-    pygame.draw.rect(screen, white, [0, 0, 10, 700])
-    pygame.draw.rect(screen, white, [590, 0, 20, 700])
+    pygame.draw.rect(screen, white, [0, 0, 10, 720])
+    pygame.draw.rect(screen, white, [590, 0, 20, 720])
 
     # drawing blocks
     add_height = 0
@@ -100,6 +100,7 @@ for e in range(3):
 
     seconds_font = pygame.font.Font("src/assets/PressStart2P.ttf", 50)
     seconds_text = seconds_font.render(str(3 - e), True, white)
+    play_sound("src/assets/beep-sound.mp3")
     seconds_text_rect = seconds_text.get_rect()
     seconds_text_rect.center = (300, 330)
     screen.blit(seconds_text, seconds_text_rect)
